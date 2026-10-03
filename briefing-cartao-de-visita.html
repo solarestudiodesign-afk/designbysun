@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Briefing — Cartão de Visitas | Emilly Sun</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #0D0D0C;
+    --white: #FFFFFF;
+    --paper: #F7F6F4;
+    --pink: #F037A5;
+    --pink-soft: #FBD3EB;
+    --font-display: 'Fraunces', serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-body: 'Inter', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{background:#0D0D0C;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+  body{margin:0;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family: var(--font-body);
+    background: var(--ink);
+    color: var(--white);
+    min-height:100vh;
+  }
+
+  .wrap{
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 28px 20px 80px;
+  }
+
+  .sheet-header{
+    border: 2px solid var(--white);
+    padding: 18px 20px;
+    margin-bottom: 22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .sheet-header .brand{
+    font-family: var(--font-display);
+    font-size: 26px;
+    letter-spacing: 0.5px;
+  }
+  .sheet-header .brand span{ color: var(--pink); font-style: italic; }
+  .sheet-meta{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    text-align:right;
+    line-height:1.6;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .title-block{ margin-bottom: 28px; }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 14px;
+  }
+  .eyebrow::before{
+    content:'';
+    width: 8px; height: 8px;
+    background: var(--pink);
+    border-radius: 50%;
+    display:inline-block;
+  }
+  h1{
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(28px, 5vw, 42px);
+    line-height: 1.1;
+    margin: 0 0 12px;
+  }
+  h1 em{ color: var(--pink); font-style: italic; }
+  .sub{
+    color: rgba(255,255,255,0.75);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 56ch;
+  }
+
+  .ruler{ display:flex; gap: 4px; margin: 26px 0 30px; }
+  .tick{
+    flex:1;
+    height: 3px;
+    background: rgba(255,255,255,0.2);
+    transition: background 0.3s ease;
+  }
+  .tick.done{ background: var(--pink); }
+  .tick.current{ background: var(--white); }
+  .ruler-label{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  .card{
+    background: var(--white);
+    color: var(--ink);
+    border-radius: 2px;
+    padding: 32px 28px;
+    position: relative;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+  }
+  .card::before{
+    content: attr(data-folha);
+    position: absolute;
+    top: 14px; right: 18px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(13,13,12,0.35);
+    letter-spacing: 0.1em;
+  }
+  .card::after{
+    content:'';
+    position:absolute;
+    top: 0; left: 0;
+    width: 100%; height: 4px;
+    background: var(--pink);
+  }
+  .step-title{
+    font-family: var(--font-display);
+    font-size: 23px;
+    font-weight: 700;
+    margin: 0 0 6px;
+  }
+  .step-hint{
+    font-size: 13.5px;
+    color: rgba(13,13,12,0.6);
+    margin: 0 0 24px;
+    line-height: 1.5;
+  }
+
+  .field{ margin-bottom: 22px; }
+  .field:last-child{ margin-bottom: 0; }
+  label.q{
+    display:block;
+    font-weight: 600;
+    font-size: 14.5px;
+    margin-bottom: 8px;
+  }
+  label.q .opt{
+    font-weight: 400;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: rgba(13,13,12,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-left: 6px;
+  }
+  input[type="text"], textarea{
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    padding: 11px 13px;
+    border: 1.5px solid rgba(13,13,12,0.2);
+    background: var(--paper);
+    border-radius: 3px;
+    color: var(--ink);
+    resize: vertical;
+  }
+  input[type="text"]:focus, textarea:focus{
+    outline: none;
+    border-color: var(--pink);
+    box-shadow: 0 0 0 3px rgba(240,55,165,0.15);
+  }
+  textarea{ min-height: 78px; line-height: 1.5; }
+
+  .pills{ display:flex; flex-wrap: wrap; gap: 8px; }
+  .pill{
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    padding: 9px 14px;
+    border: 1.5px solid rgba(13,13,12,0.25);
+    border-radius: 999px;
+    cursor: pointer;
+    user-select: none;
+    background: var(--paper);
+    transition: all 0.15s ease;
+  }
+  .pill:hover{ border-color: var(--ink); }
+  .pill.selected{
+    background: var(--ink);
+    color: var(--pink-soft);
+    border-color: var(--ink);
+  }
+  .pill.accent.selected{
+    background: var(--pink);
+    color: var(--white);
+    border-color: var(--pink);
+  }
+
+  .nav{
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    margin-top: 26px;
+  }
+  button{
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 12px 22px;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.12s ease, opacity 0.12s ease;
+  }
+  button:active{ transform: scale(0.97); }
+  .btn-next{ background: var(--pink); color: var(--white); font-weight: 600; }
+  .btn-next:hover{ opacity: 0.88; }
+  .btn-back{ background: transparent; color: rgba(255,255,255,0.7); border: 1.5px solid rgba(255,255,255,0.35); }
+  .btn-back:hover{ color: var(--white); border-color: rgba(255,255,255,0.6); }
+  .btn-back[disabled]{ opacity: 0; pointer-events: none; }
+
+  .summary h2{
+    font-family: var(--font-display);
+    font-size: 24px;
+    margin: 0 0 4px;
+  }
+  .summary .ok-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--pink);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 18px;
+  }
+  .summary-block{
+    background: var(--paper);
+    border: 1px dashed rgba(13,13,12,0.3);
+    border-radius: 3px;
+    padding: 16px 18px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    max-height: 340px;
+    overflow-y: auto;
+    color: rgba(13,13,12,0.85);
+  }
+  .summary-actions{ display:flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  .btn-copy{ background: var(--ink); color: var(--pink-soft); }
+  .btn-copy:hover{ opacity: 0.9; }
+  .btn-wa{ background: var(--pink); color: var(--white); font-weight: 600; }
+  .btn-wa:hover{ opacity: 0.88; }
+  .copied-msg{
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--pink);
+    margin-top: 10px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .copied-msg.show{ opacity: 1; }
+
+  @media (max-width: 480px){
+    .card{ padding: 24px 18px; }
+    .sheet-header{ padding: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="sheet-header">
+    <div class="brand">Emilly <span>Sun</span></div>
+    <div class="sheet-meta">Briefing<br>Cartão de Visitas — Rev. 01</div>
+  </div>
+
+  <div class="title-block">
+    <div class="eyebrow">Pequeno no tamanho, grande na primeira impressão</div>
+    <h1>Briefing de <em>cartão de visitas</em></h1>
+    <p class="sub">Poucas perguntas, só o que eu preciso para criar um cartão com a sua cara. Leva uns 3 minutos.</p>
+  </div>
+
+  <div class="ruler-label" id="rulerLabel">Folha 1 de 5</div>
+  <div class="ruler" id="ruler"></div>
+
+  <form id="briefForm">
+
+    <!-- FOLHA 1 — DADOS -->
+    <div class="card step" data-folha="01 / DADOS" data-step="0">
+      <div class="step-title">O que vai no cartão</div>
+      <p class="step-hint">Os textos principais, exatamente como você quer que apareçam.</p>
+
+      <div class="field">
+        <label class="q">Nome que vai no cartão</label>
+        <input type="text" name="nome" placeholder="Ex: Maria Silva">
+      </div>
+
+      <div class="field">
+        <label class="q">Profissão ou cargo</label>
+        <input type="text" name="cargo" placeholder="Ex: Lash Designer, Advogada, Nutricionista">
+      </div>
+
+      <div class="field">
+        <label class="q">Nome da empresa/marca <span class="opt">opcional</span></label>
+        <input type="text" name="empresa" placeholder="Ex: Estúdio Maria Silva">
+      </div>
+
+      <div class="field">
+        <label class="q">Slogan ou frase curta <span class="opt">opcional</span></label>
+        <input type="text" name="slogan" placeholder="Ex: realçando o seu olhar">
+      </div>
+    </div>
+
+    <!-- FOLHA 2 — CONTATO -->
+    <div class="card step" data-folha="02 / CONTATO" data-step="1" style="display:none">
+      <div class="step-title">Informações de contato</div>
+      <p class="step-hint">Coloque só o que você quer que o cliente use de verdade.</p>
+
+      <div class="field">
+        <label class="q">WhatsApp / telefone</label>
+        <input type="text" name="telefone" placeholder="Ex: (17) 99999-9999">
+      </div>
+
+      <div class="field">
+        <label class="q">E-mail <span class="opt">opcional</span></label>
+        <input type="text" name="email" placeholder="Ex: contato@seudominio.com.br">
+      </div>
+
+      <div class="field">
+        <label class="q">Instagram e/ou site <span class="opt">opcional</span></label>
+        <input type="text" name="redes" placeholder="Ex: @seuperfil · www.seusite.com.br">
+      </div>
+
+      <div class="field">
+        <label class="q">Endereço <span class="opt">só se atende em local físico</span></label>
+        <input type="text" name="endereco" placeholder="Ex: Rua das Flores, 123 — Centro, Rio Preto/SP">
+      </div>
+
+      <div class="field">
+        <label class="q">Quer um QR Code no cartão?</label>
+        <div class="pills" data-name="qrcode">
+          <div class="pill">Sim, para o WhatsApp</div>
+          <div class="pill">Sim, para o Instagram</div>
+          <div class="pill">Sim, para o site</div>
+          <div class="pill">Não precisa</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOLHA 3 — VISUAL -->
+    <div class="card step" data-folha="03 / VISUAL" data-step="2" style="display:none">
+      <div class="step-title">Visual do cartão</div>
+      <p class="step-hint">Para eu acertar o estilo logo de primeira.</p>
+
+      <div class="field">
+        <label class="q">Você já tem logo ou identidade visual?</label>
+        <div class="pills" data-name="logo">
+          <div class="pill">Tenho logo e cores definidas</div>
+          <div class="pill">Tenho só o logo</div>
+          <div class="pill">Ainda não tenho nada</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="q">Estilo que combina com você <span class="opt">até 2</span></label>
+        <div class="pills" data-name="estilo" data-max="2">
+          <div class="pill">Minimalista</div>
+          <div class="pill">Elegante / premium</div>
+          <div class="pill">Divertido / colorido</div>
+          <div class="pill">Moderno / ousado</div>
+          <div class="pill">Delicado / feminino</div>
+          <div class="pill">Clássico / sóbrio</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="q">Cores que gostaria de usar — ou EVITAR</label>
+        <input type="text" name="cores" placeholder="Ex: tons de verde e dourado, evitar vermelho">
+      </div>
+
+      <div class="field">
+        <label class="q">Tem algum cartão ou marca que você admira? <span class="opt">opcional</span></label>
+        <input type="text" name="referencia" placeholder="Ex: gosto de cartões simples, só com tipografia">
+      </div>
+    </div>
+
+    <!-- FOLHA 4 — FORMATO E PRAZO -->
+    <div class="card step" data-folha="04 / FORMATO" data-step="3" style="display:none">
+      <div class="step-title">Formato e prazo</div>
+      <p class="step-hint">Últimos detalhes para fechar o projeto.</p>
+
+      <div class="field">
+        <label class="q">Como será usado?</label>
+        <div class="pills" data-name="uso">
+          <div class="pill">Impresso</div>
+          <div class="pill">Digital (enviar pelo WhatsApp)</div>
+          <div class="pill">Os dois</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="q">Formato</label>
+        <div class="pills" data-name="formato">
+          <div class="pill">Horizontal (o clássico)</div>
+          <div class="pill">Vertical</div>
+          <div class="pill">Quadrado</div>
+          <div class="pill">Não sei, me indique</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="q">Frente e verso?</label>
+        <div class="pills" data-name="faces">
+          <div class="pill">Só frente</div>
+          <div class="pill">Frente e verso</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="q">Prazo desejado <span class="opt">opcional</span></label>
+        <input type="text" name="prazo" placeholder="Ex: sem urgência / preciso até o dia 20">
+      </div>
+
+      <div class="field">
+        <label class="q">Seu nome e melhor contato <span class="opt">para eu te responder</span></label>
+        <input type="text" name="contato" placeholder="Ex: Maria Silva — (17) 99999-9999">
+      </div>
+    </div>
+
+    <!-- FOLHA 5 — RESUMO -->
+    <div class="card step summary" data-folha="05 / RESUMO" data-step="4" style="display:none">
+      <div class="ok-tag">● Briefing concluído</div>
+      <h2>Confira e envie</h2>
+      <p class="step-hint">Confira suas respostas e toque em enviar: o WhatsApp abre com tudo preenchido, é só confirmar o envio para eu começar a criar o seu cartão.</p>
+      <div class="summary-block" id="summaryText"></div>
+      <div class="summary-actions">
+        <button type="button" class="btn-wa" id="waBtn">Enviar por WhatsApp →</button>
+        <button type="button" class="btn-copy" id="copyBtn">Copiar respostas</button>
+      </div>
+      <div class="copied-msg" id="copiedMsg">✓ Copiado! Agora é só colar na conversa comigo.</div>
+    </div>
+
+    <div class="nav" id="navRow">
+      <button type="button" class="btn-back" id="backBtn">← Voltar</button>
+      <button type="button" class="btn-next" id="nextBtn">Avançar →</button>
+    </div>
+
+  </form>
+
+</div>
+
+<script>
+(function(){
+  // Número do WhatsApp (somente dígitos, com 55 + DDD)
+  var WHATSAPP = "5567992032259";
+  var steps = Array.from(document.querySelectorAll('.step'));
+  var total = steps.length;
+  var current = 0;
+
+  var ruler = document.getElementById('ruler');
+  for(var i=0;i<total;i++){
+    var t = document.createElement('div');
+    t.className = 'tick';
+    ruler.appendChild(t);
+  }
+  var ticks = Array.from(ruler.children);
+
+  var rulerLabel = document.getElementById('rulerLabel');
+  var backBtn = document.getElementById('backBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var navRow = document.getElementById('navRow');
+
+  var pillState = {};
+
+  document.querySelectorAll('.pills').forEach(function(group){
+    var name = group.getAttribute('data-name');
+    var max = parseInt(group.getAttribute('data-max') || '1', 10);
+    var hasMax = group.hasAttribute('data-max');
+    pillState[name] = new Set();
+    var pills = Array.from(group.children);
+    pills.forEach(function(pill){
+      pill.classList.add('accent');
+      pill.addEventListener('click', function(){
+        var label = pill.textContent;
+        if(!hasMax){
+          pills.forEach(function(p){ p.classList.remove('selected'); });
+          pillState[name].clear();
+          pill.classList.add('selected');
+          pillState[name].add(label);
+        } else if(pill.classList.contains('selected')){
+          pill.classList.remove('selected');
+          pillState[name].delete(label);
+        } else {
+          if(pillState[name].size >= max){ return; }
+          pill.classList.add('selected');
+          pillState[name].add(label);
+        }
+      });
+    });
+  });
+
+  function showStep(idx){
+    steps.forEach(function(s, i){ s.style.display = (i===idx) ? 'block' : 'none'; });
+    rulerLabel.textContent = 'Folha ' + (idx+1) + ' de ' + total;
+    ticks.forEach(function(t, i){
+      t.classList.toggle('done', i < idx);
+      t.classList.toggle('current', i === idx);
+    });
+    backBtn.disabled = (idx === 0);
+    if(idx === total - 1){
+      navRow.style.display = 'none';
+      buildSummary();
+    } else {
+      navRow.style.display = 'flex';
+      nextBtn.textContent = (idx === total - 2) ? 'Concluir →' : 'Avançar →';
+    }
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  nextBtn.addEventListener('click', function(){
+    if(current < total - 1){ current++; showStep(current); }
+  });
+  backBtn.addEventListener('click', function(){
+    if(current > 0){ current--; showStep(current); }
+  });
+
+  var fieldMap = {
+    nome: 'Nome no cartão',
+    cargo: 'Profissão/cargo',
+    empresa: 'Empresa/marca',
+    slogan: 'Slogan',
+    telefone: 'WhatsApp/telefone',
+    email: 'E-mail',
+    redes: 'Instagram/site',
+    endereco: 'Endereço',
+    cores: 'Cores desejadas/evitar',
+    referencia: 'Referência',
+    prazo: 'Prazo desejado',
+    contato: 'Nome e contato'
+  };
+  var pillMap = {
+    qrcode: 'QR Code',
+    logo: 'Logo/identidade',
+    estilo: 'Estilo visual',
+    uso: 'Uso',
+    formato: 'Formato',
+    faces: 'Frente e verso'
+  };
+
+  function buildSummary(){
+    var lines = [];
+    lines.push('BRIEFING — CARTÃO DE VISITAS');
+    lines.push('Emilly Sun · ' + new Date().toLocaleDateString('pt-BR'));
+    lines.push('————————————————————');
+
+    document.querySelectorAll('input[type="text"], textarea').forEach(function(el){
+      var val = el.value.trim();
+      if(val){ lines.push((fieldMap[el.name] || el.name) + ': ' + val); }
+    });
+
+    Object.keys(pillState).forEach(function(name){
+      var vals = Array.from(pillState[name]);
+      if(vals.length){ lines.push((pillMap[name] || name) + ': ' + vals.join(', ')); }
+    });
+
+    document.getElementById('summaryText').textContent = lines.join('\n');
+  }
+
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    var text = document.getElementById('summaryText').textContent;
+    function ok(){
+      var msg = document.getElementById('copiedMsg');
+      msg.classList.add('show');
+      setTimeout(function(){ msg.classList.remove('show'); }, 3000);
+    }
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); ok(); }catch(e){}
+      document.body.removeChild(ta);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(ok, fallback);
+    } else { fallback(); }
+  });
+
+  document.getElementById('waBtn').addEventListener('click', function(){
+    var text = document.getElementById('summaryText').textContent;
+    window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(text), '_blank');
+  });
+
+  showStep(0);
+})();
+</script>
+
+</body>
+</html>
