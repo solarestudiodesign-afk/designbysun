@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Briefing — Identidade Visual | Emilly Sun</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #0D0D0C;
+    --white: #FFFFFF;
+    --paper: #F7F6F4;
+    --pink: #F037A5;
+    --pink-soft: #FBD3EB;
+    --font-display: 'Fraunces', serif;
+    --font-mono: 'IBM Plex Mono', monospace;
+    --font-body: 'Inter', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  html{background:#0D0D0C;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+  body{margin:0;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    font-family: var(--font-body);
+    background: var(--ink);
+    color: var(--white);
+    min-height:100vh;
+  }
+
+  .wrap{
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 28px 20px 80px;
+  }
+
+  .sheet-header{
+    border: 2px solid var(--white);
+    padding: 18px 20px;
+    margin-bottom: 22px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .sheet-header .brand{
+    font-family: var(--font-display);
+    font-size: 26px;
+    letter-spacing: 0.5px;
+  }
+  .sheet-header .brand span{ color: var(--pink); font-style: italic; }
+  .sheet-meta{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    text-align:right;
+    line-height:1.6;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .title-block{ margin-bottom: 28px; }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 14px;
+  }
+  .eyebrow::before{
+    content:'';
+    width: 8px; height: 8px;
+    background: var(--pink);
+    border-radius: 50%;
+    display:inline-block;
+  }
+  h1{
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(28px, 5vw, 42px);
+    line-height: 1.1;
+    margin: 0 0 12px;
+  }
+  h1 em{ color: var(--pink); font-style: italic; }
+  .sub{
+    color: rgba(255,255,255,0.75);
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 56ch;
+  }
+
+  .ruler{ display:flex; gap: 4px; margin: 26px 0 30px; }
+  .tick{
+    flex:1;
+    height: 3px;
+    background: rgba(255,255,255,0.2);
+    transition: background 0.3s ease;
+  }
+  .tick.done{ background: var(--pink); }
+  .tick.current{ background: var(--white); }
+  .ruler-label{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  .card{
+    background: var(--white);
+    color: var(--ink);
+    border-radius: 2px;
+    padding: 32px 28px;
+    position: relative;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+  }
+  .card::before{
+    content: attr(data-folha);
+    position: absolute;
+    top: 14px; right: 18px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: rgba(13,13,12,0.35);
+    letter-spacing: 0.1em;
+  }
+  .card::after{
+    content:'';
+    position:absolute;
+    top: 0; left: 0;
+    width: 100%; height: 4px;
+    background: var(--pink);
+  }
+  .step-title{
+    font-family: var(--font-display);
+    font-size: 23px;
+    font-weight: 700;
+    margin: 0 0 6px;
+  }
+  .step-hint{
+    font-size: 13.5px;
+    color: rgba(13,13,12,0.6);
+    margin: 0 0 24px;
+    line-height: 1.5;
+  }
+
+  .field{ margin-bottom: 22px; }
+  .field:last-child{ margin-bottom: 0; }
+  label.q{
+    display:block;
+    font-weight: 600;
+    font-size: 14.5px;
+    margin-bottom: 8px;
+  }
+  label.q .opt{
+    font-weight: 400;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: rgba(13,13,12,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-left: 6px;
+  }
+  input[type="text"], textarea{
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    padding: 11px 13px;
+    border: 1.5px solid rgba(13,13,12,0.2);
+    background: var(--paper);
+    border-radius: 3px;
+    color: var(--ink);
+    resize: vertical;
+  }
+  input[type="text"]:focus, textarea:focus{
+    outline: none;
+    border-color: var(--pink);
+    box-shadow: 0 0 0 3px rgba(240,55,165,0.15);
+  }
+  textarea{ min-height: 78px; line-height: 1.5; }
+
+  .pills{ display:flex; flex-wrap: wrap; gap: 8px; }
+  .pill{
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    padding: 9px 14px;
+    border: 1.5px solid rgba(13,13,12,0.25);
+    border-radius: 999px;
+    cursor: pointer;
+    user-select: none;
+    background: var(--paper);
+    transition: all 0.15s ease;
+  }
+  .pill:hover{ border-color: var(--ink); }
+  .pill.selected{
+    background: var(--ink);
+    color: var(--pink-soft);
+    border-color: var(--ink);
+  }
+  .pill.accent.selected{
+    background: var(--pink);
+    color: var(--white);
+    border-color: var(--pink);
+  }
+
+  .nav{
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    margin-top: 26px;
+  }
+  button{
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 12px 22px;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.12s ease, opacity 0.12s ease;
+  }
+  button:active{ transform: scale(0.97); }
+  .btn-next{ background: var(--pink); color: var(--white); font-weight: 600; }
+  .btn-next:hover{ opacity: 0.88; }
+  .btn-back{ background: transparent; color: rgba(255,255,255,0.7); border: 1.5px solid rgba(255,255,255,0.35); }
+  .btn-back:hover{ color: var(--white); border-color: rgba(255,255,255,0.6); }
+  .btn-back[disabled]{ opacity: 0; pointer-events: none; }
+
+  .summary h2{
+    font-family: var(--font-display);
+    font-size: 24px;
+    margin: 0 0 4px;
+  }
+  .summary .ok-tag{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--pink);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 18px;
+  }
+  .summary-block{
+    background: var(--paper);
+    border: 1px dashed rgba(13,13,12,0.3);
+    border-radius: 3px;
+    padding: 16px 18px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    max-height: 340px;
+    overflow-y: auto;
+    color: rgba(13,13,12,0.85);
+  }
+  .summary-actions{ display:flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  .btn-copy{ background: var(--ink); color: var(--pink-soft); }
+  .btn-copy:hover{ opacity: 0.9; }
+  .btn-wa{ background: var(--pink); color: var(--white); font-weight: 600; }
+  .btn-wa:hover{ opacity: 0.88; }
+  .copied-msg{
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--pink);
+    margin-top: 10px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .copied-msg.show{ opacity: 1; }
+
+  @media (max-width: 480px){
+    .card{ padding: 24px 18px; }
+    .sheet-header{ padding: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="sheet-header">
+    <div class="brand">Emilly <span>Sun</span></div>
+    <div class="sheet-meta">Briefing<br>Identidade Visual — Rev. 01</div>
+  </div>
+
+  <div class="title-block">
+    <div class="eyebrow">A base de tudo que sua marca vai comunicar</div>
+    <h1>Briefing de <em>identidade visual</em></h1>
+    <p class="sub">Antes de criar logotipo, cores e tipografia, preciso entender a essência da sua marca por dentro. Esse é o briefing mais aprofundado do meu catálogo — leva uns 8 minutos, mas garante uma marca com propósito, não só bonita.</p>
+  </div>
+
+  <div class="ruler-label" id="rulerLabel">Folha 1 de 7</div>
+  <div class="ruler" id="ruler"></div>
+
+  <form id="briefForm">
+
+    <!-- FOLHA 1 — A MARCA -->
+    <div class="card step" data-folha="01 / MARCA" data-step="0">
+      <div class="step-title">Sobre a marca</div>
+      <p class="step-hint">O básico: quem é, o que faz, e por que esse projeto está acontecendo agora.</p>
+
+      <div class="field">
+        <label class="q">Nome da marca/empresa <span class="opt">ou "ainda não definido"</span></label>
+        <input type="text" name="marca" placeholder="Ex: Raissa Okada Lash Designer">
+      </div>
+
+      <div class="field">
+        <label class="q">Em uma frase, o que vocês fazem?</label>
+        <input type="text" name="oquefaz" placeholder="Ex: estúdio de extensão de cílios em Rio Preto">
+      </div>
+
+      <div class="field">
+        <label class="q">Por que esse projeto está acontecendo agora?</label>
+        <div class="pills" data-name="motivo">
+          <div class="pill">Negócio novo, começando do zero</div>
+          <div class="pill">Rebranding (já existe, quer renovar)</div>
+          <div class="pill">Nunca teve identidade profissional</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="q">Conte a história da marca, se houver <span class="opt">opcional</span></label>
+        <textarea name="historia" placeholder="Ex: comecei atendendo em casa há 3 anos, hoje tenho estúdio próprio..."></textarea>
+      </div>
+    </div>
+
+    <!-- FOLHA 2 — POSICIONAMENTO -->
+    <div class="card step" data-folha="02 / POSICIONAMENTO" data-step="1" style="display:none">
+      <div class="step-title">Posicionamento e valores</div>
+      <p class="step-hint">Isso é o que dá alma pro visual — sem isso, vira só "um logo bonito".</p>
+
+      <div class="field">
+        <label class="q">Se a marca fosse uma pessoa, como ela seria? <span class="opt">3 adjetivos</span></label>
+        <input type="text" name="personalidade" placeholder="Ex: confiante, acolhedora, moderna">
+      </div>
+
+      <div class="field">
+        <label class="q">Quais valores a marca não abre mão de transmitir?</label>
+        <textarea name="valores" placeholder="Ex: qualidade, transparência, cuidado com o cliente"></textarea>
+      </div>
+
+      <div class="field">
+        <label class="q">O que faz vocês diferentes da concorrência?</label>
+        <textarea name="diferencial" placeholder="Ex: técnica exclusiva, atendimento personalizado, anos de experiência"></textarea>
+      </div>
+
+      <div class="field">
+        <label class="q">Concorrentes ou marcas do mesmo segmento que você admira ou quer se diferenciar</label>
+        <textarea name="concorrentes" placeholder="Ex: admiro a marca X pelo posicionamento premium"></textarea>
+      </div>
+    </div>
+
+    <!-- FOLHA 3 — PÚBLICO -->
+    <div class="card step" data-folha="03 / PÚBLICO" data-step="2" style="display:none">
+      <div class="step-title">Público-alvo</div>
+      <p class="step-hint">Pra quem essa marca está falando.</p>
+
+      <div class="field">
+        <label class="q">Quem é o cliente ideal dessa marca?</label>
+        <textarea name="publico" placeholder="Ex: mulheres de 25-45 anos, classe B/C, que valorizam autocuidado"></textarea>
+      </div>
+
+      <div class="field">
+        <label class="q">Onde essa marca vai aparecer no dia a dia?</label>
+        <div class="pills" data-name="pontos_contato">
+          <div class="pill">Redes sociais</div>
+          <div class="pill">Loja física / fachada</div>
+          <div class="pill">Site</div>
+          <div class="pill">Papelaria (cartão, envelope)</div>
+          <div class="pill">Embalagens de produto</div>
+          <div class="pill">Uniforme</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOLHA 4 — DIREÇÃO VISUAL -->
+    <div class="card step" data-folha="04 / VISUAL" data-step="3" style="display:none">
+      <div class="step-title">Direção visual</div>
+      <p class="step-hint">O que já existe e para onde queremos ir com a estética da marca.</p>
+
+      <div class="field">
+        <label class="q">Já existe algum elemento visual pra seguir? <span class="opt">rascunho de logo, cores usadas antes</span></label>
+        <div class="pills" data-name="ponto_partida">
+          <div class="pill">Não tenho nada, é do zero</div>
+          <div class="pill">Tenho um rascunho/referência solta</div>
+          <div class="pill">Tenho um logo antigo pra evoluir</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="q">Estilo visual que combina com a marca <span class="opt">até 3</span></label>
+        <div class="pills" data-name="estilo" data-max="3">
+          <div class="pill">Minimalista</div>
+          <div class="pill">Elegante / premium</div>
+          <div class="pill">Divertido / descontraído</div>
+          <div class="pill">Clássico / atemporal</div>
+          <div class="pill">Moderno / ousado</div>
+          <div class="pill">Artesanal / feito à mão</div>
+          <div class="pill">Tecnológico / clean</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="q">Marcas (de qualquer segmento) cuja identidade visual você admira</label>
+        <textarea name="referencias" placeholder="Ex: gosto da simplicidade da marca X, ou das cores da marca Y"></textarea>
+      </div>
+
+      <div class="field">
+        <label class="q">Cores que gostaria de usar — ou EVITAR</label>
+        <input type="text" name="cores" placeholder="Ex: gostaria de tons terrosos, evitar rosa (marca da concorrente usa)">
+      </div>
+
+      <div class="field">
+        <label class="q">Algum símbolo, ícone ou elemento que represente a marca?</label>
+        <input type="text" name="simbolos" placeholder="Ex: uma folha, uma estrela, iniciais do nome">
+      </div>
+    </div>
+
+    <!-- FOLHA 5 — APLICAÇÕES -->
+    <div class="card step" data-folha="05 / APLICAÇÕES" data-step="4" style="display:none">
+      <div class="step-title">Aplicações necessárias</div>
+      <p class="step-hint">O que precisa estar pronto no manual de marca, além do logo.</p>
+
+      <div class="field">
+        <label class="q">Quais aplicações a identidade precisa cobrir?</label>
+        <div class="pills" data-name="aplicacoes">
+          <div class="pill">Cartão de visita</div>
+          <div class="pill">Papel timbrado / assinatura de e-mail</div>
+          <div class="pill">Template para redes sociais</div>
+          <div class="pill">Fachada / placa</div>
+          <div class="pill">Embalagem de produto</div>
+          <div class="pill">Uniforme</div>
+          <div class="pill">Manual de marca completo</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="q">Alguma dessas aplicações tem prioridade ou urgência maior?</label>
+        <input type="text" name="prioridade" placeholder="Ex: preciso do cartão de visita primeiro, pra um evento">
+      </div>
+    </div>
+
+    <!-- FOLHA 6 — PRAZO -->
+    <div class="card step" data-folha="06 / PRAZO" data-step="5" style="display:none">
+      <div class="step-title">Prazo e contato</div>
+      <p class="step-hint">Últimos dados pra eu organizar o cronograma do projeto.</p>
+
+      <div class="field">
+        <label class="q">Existe uma data-limite para o projeto estar pronto?</label>
+        <input type="text" name="prazo" placeholder="Ex: sem urgência / preciso até o lançamento em outubro">
+      </div>
+
+      <div class="field">
+        <label class="q">Seu nome e melhor contato <span class="opt">whatsapp ou e-mail</span></label>
+        <input type="text" name="contato" placeholder="Ex: Maria Silva — (17) 99999-9999">
+      </div>
+    </div>
+
+    <!-- FOLHA 7 — RESUMO -->
+    <div class="card step summary" data-folha="07 / RESUMO" data-step="6" style="display:none">
+      <div class="ok-tag">● Briefing concluído</div>
+      <h2>Confira e envie</h2>
+      <p class="step-hint">Confira suas respostas e toque em enviar: o WhatsApp abre com tudo preenchido, é só confirmar o envio para eu começar o estudo da sua marca.</p>
+      <div class="summary-block" id="summaryText"></div>
+      <div class="summary-actions">
+        <button type="button" class="btn-wa" id="waBtn">Enviar por WhatsApp →</button>
+        <button type="button" class="btn-copy" id="copyBtn">Copiar respostas</button>
+      </div>
+      <div class="copied-msg" id="copiedMsg">✓ Copiado! Agora é só colar na conversa comigo.</div>
+    </div>
+
+    <div class="nav" id="navRow">
+      <button type="button" class="btn-back" id="backBtn">← Voltar</button>
+      <button type="button" class="btn-next" id="nextBtn">Avançar →</button>
+    </div>
+
+  </form>
+
+</div>
+
+<script>
+(function(){
+  // Número do WhatsApp (somente dígitos, com 55 + DDD). Ex: "5517999999999"
+  var WHATSAPP = "5567992032259";
+  var steps = Array.from(document.querySelectorAll('.step'));
+  var total = steps.length;
+  var current = 0;
+
+  var ruler = document.getElementById('ruler');
+  for(var i=0;i<total;i++){
+    var t = document.createElement('div');
+    t.className = 'tick';
+    ruler.appendChild(t);
+  }
+  var ticks = Array.from(ruler.children);
+
+  var rulerLabel = document.getElementById('rulerLabel');
+  var backBtn = document.getElementById('backBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var navRow = document.getElementById('navRow');
+
+  var pillState = {};
+
+  document.querySelectorAll('.pills').forEach(function(group){
+    var name = group.getAttribute('data-name');
+    var max = parseInt(group.getAttribute('data-max') || '1', 10);
+    var isMulti = (name === 'pontos_contato' || name === 'aplicacoes');
+    pillState[name] = new Set();
+    var pills = Array.from(group.children);
+    pills.forEach(function(pill){
+      pill.classList.add('accent');
+      pill.addEventListener('click', function(){
+        var label = pill.textContent;
+        var hasMax = group.hasAttribute('data-max');
+        if(isMulti){
+          if(pill.classList.contains('selected')){
+            pill.classList.remove('selected');
+            pillState[name].delete(label);
+          } else {
+            pill.classList.add('selected');
+            pillState[name].add(label);
+          }
+        } else if(!hasMax){
+          pills.forEach(function(p){ p.classList.remove('selected'); });
+          pillState[name].clear();
+          pill.classList.add('selected');
+          pillState[name].add(label);
+        } else {
+          if(pill.classList.contains('selected')){
+            pill.classList.remove('selected');
+            pillState[name].delete(label);
+          } else {
+            if(pillState[name].size >= max){ return; }
+            pill.classList.add('selected');
+            pillState[name].add(label);
+          }
+        }
+      });
+    });
+  });
+
+  function showStep(idx){
+    steps.forEach(function(s, i){ s.style.display = (i===idx) ? 'block' : 'none'; });
+    rulerLabel.textContent = 'Folha ' + (idx+1) + ' de ' + total;
+    ticks.forEach(function(t, i){
+      t.classList.toggle('done', i < idx);
+      t.classList.toggle('current', i === idx);
+    });
+    backBtn.disabled = (idx === 0);
+    if(idx === total - 1){
+      navRow.style.display = 'none';
+      buildSummary();
+    } else {
+      navRow.style.display = 'flex';
+      nextBtn.textContent = (idx === total - 2) ? 'Concluir →' : 'Avançar →';
+    }
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  nextBtn.addEventListener('click', function(){
+    if(current < total - 1){ current++; showStep(current); }
+  });
+  backBtn.addEventListener('click', function(){
+    if(current > 0){ current--; showStep(current); }
+  });
+
+  function fieldLabel(name){
+    var map = {
+      marca: 'Marca/empresa',
+      oquefaz: 'O que faz',
+      historia: 'História da marca',
+      personalidade: 'Personalidade da marca',
+      valores: 'Valores',
+      diferencial: 'Diferencial',
+      concorrentes: 'Concorrentes/referências de mercado',
+      publico: 'Público-alvo',
+      referencias: 'Marcas de referência visual',
+      cores: 'Cores desejadas/evitar',
+      simbolos: 'Símbolos/elementos',
+      prioridade: 'Aplicação prioritária',
+      prazo: 'Prazo desejado',
+      contato: 'Nome e contato'
+    };
+    return map[name] || name;
+  }
+
+  function pillLabel(name){
+    var map = {
+      motivo: 'Motivo do projeto',
+      pontos_contato: 'Pontos de contato da marca',
+      ponto_partida: 'Ponto de partida visual',
+      estilo: 'Estilo visual desejado',
+      aplicacoes: 'Aplicações necessárias'
+    };
+    return map[name] || name;
+  }
+
+  function buildSummary(){
+    var lines = [];
+    lines.push('BRIEFING — IDENTIDADE VISUAL');
+    lines.push('Emilly Sun · ' + new Date().toLocaleDateString('pt-BR'));
+    lines.push('————————————————————');
+
+    document.querySelectorAll('input[type="text"], textarea').forEach(function(el){
+      var val = el.value.trim();
+      if(val){ lines.push(fieldLabel(el.name) + ': ' + val); }
+    });
+
+    Object.keys(pillState).forEach(function(name){
+      var vals = Array.from(pillState[name]);
+      if(vals.length){ lines.push(pillLabel(name) + ': ' + vals.join(', ')); }
+    });
+
+    document.getElementById('summaryText').textContent = lines.join('\n');
+  }
+
+  document.getElementById('copyBtn').addEventListener('click', function(){
+    var text = document.getElementById('summaryText').textContent;
+    function ok(){
+      var msg = document.getElementById('copiedMsg');
+      msg.classList.add('show');
+      setTimeout(function(){ msg.classList.remove('show'); }, 3000);
+    }
+    function fallback(){
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); ok(); }catch(e){}
+      document.body.removeChild(ta);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(ok, fallback);
+    } else { fallback(); }
+  });
+
+  document.getElementById('waBtn').addEventListener('click', function(){
+    var text = document.getElementById('summaryText').textContent;
+    var url = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(text);
+    window.open(url, '_blank');
+  });
+
+  showStep(0);
+})();
+</script>
+
+</body>
+</html>
