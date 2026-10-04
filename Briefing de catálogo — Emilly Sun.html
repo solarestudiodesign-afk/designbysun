@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Briefing de catálogo — Emilly Sun</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FBFAF6;--surf:#fff;--ink:#1A1A18;--mute:#6B6B66;--line:#DDD9CC;--sun:#E0B22A;--sun-ink:#7A5A00;--on-sun:#1A1A18;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0C0C0B;--surf:#161614;--ink:#F3F1EA;--mute:#A6A397;--line:#2E2D29;--sun-ink:#E0B22A}}
+:root[data-theme="dark"]{--bg:#0C0C0B;--surf:#161614;--ink:#F3F1EA;--mute:#A6A397;--line:#2E2D29;--sun-ink:#E0B22A}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 Figtree,system-ui,sans-serif}
+.wrap{max-width:680px;margin:0 auto;padding:0 20px 120px}
+header{padding:56px 0 28px}
+.sun{width:64px;height:64px;border-radius:50%;background:var(--sun);box-shadow:0 0 0 14px color-mix(in srgb,var(--sun) 22%,transparent),0 0 0 32px color-mix(in srgb,var(--sun) 9%,transparent);margin:0 0 44px 8px}
+.by{font:italic 400 18px Fraunces,Georgia,serif;color:var(--mute);margin:0 0 6px}
+h1{font:600 clamp(34px,8vw,52px)/1.05 Fraunces,Georgia,serif;margin:0 0 14px;letter-spacing:-.02em}
+h1 span{font-weight:400;color:var(--sun-ink)}
+.lead{color:var(--mute);margin:0;max-width:52ch}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;font-size:14px;color:var(--mute)}
+.track{flex:1;height:4px;background:var(--line);border-radius:4px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--sun);transition:width .3s}
+fieldset{border:0;border-top:1px solid var(--line);margin:34px 0 0;padding:22px 0 0;min-width:0}
+legend{font:600 26px/1.15 Fraunces,Georgia,serif;padding:0 0 4px;letter-spacing:-.01em}
+.sub{color:var(--mute);margin:0 0 18px;font-size:15px}
+.f{margin:0 0 20px}
+label.t,.q{display:block;font-weight:500;margin:0 0 6px}
+.h{display:block;color:var(--mute);font-size:13.5px;font-weight:400}
+input[type=text],textarea{width:100%;font:inherit;color:var(--ink);background:var(--surf);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+textarea{min-height:92px;resize:vertical}
+input:focus-visible,textarea:focus-visible,button:focus-visible,.o:has(input:focus-visible){outline:2px solid var(--sun);outline-offset:2px}
+.os{display:flex;flex-wrap:wrap;gap:8px}
+.o{position:relative}
+.o input{position:absolute;opacity:0;inset:0;cursor:pointer;margin:0}
+.o span{display:block;padding:9px 15px;border:1px solid var(--line);border-radius:999px;background:var(--surf);font-size:15px}
+.o input:checked+span{background:var(--sun);border-color:var(--sun);color:var(--on-sun);font-weight:600}
+.err{color:#C0392B;font-size:14px;margin:6px 0 0;display:none}
+.bad .err{display:block}.bad input[type=text],.bad textarea{border-color:#C0392B}
+.send{margin-top:36px;border-top:1px solid var(--line);padding-top:26px}
+button{font:600 16px Figtree,system-ui,sans-serif;border-radius:999px;padding:14px 24px;cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:var(--bg)}
+button.go{background:var(--sun);border-color:var(--sun);color:var(--on-sun)}
+button.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+#msg{color:var(--mute);font-size:14px;margin:12px 0 0;min-height:20px}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="sun" aria-hidden="true"></div>
+  <p class="by">Emilly Sun · Design gráfico</p>
+  <h1>Briefing de <span>catálogo</span></h1>
+  <p class="lead">Quanto mais você me contar sobre os produtos e o uso do catálogo, mais certeiro ele fica. Leva uns 10 minutos, e dá para pular o que não souber.</p>
+</header>
+<div class="bar"><span id="pc">0%</span><div class="track"><div class="fill" id="fl"></div></div></div>
+<form id="form" novalidate></form>
+<div class="send">
+  <div class="row">
+    <button type="button" class="go" id="wa">Enviar pelo WhatsApp</button>
+    <button type="button" class="ghost" id="cp">Copiar respostas</button>
+  </div>
+  <p id="msg" role="status"></p>
+</div>
+</div>
+<script>
+var WA="5567992032259";
+var S=[
+{t:"Sobre você e a marca",s:"Para eu saber com quem estou falando.",f:[
+ ["nome","Seu nome","text",null,"",1],
+ ["marca","Nome da marca ou empresa","text",null,"",1],
+ ["seg","O que a marca vende ou faz?","text",null,"Ex.: bolos e doces, roupas femininas, cosméticos"],
+ ["insta","Instagram da marca","text"],
+ ["cidade","Cidade onde atua","text"]]},
+{t:"Objetivo do catálogo",s:"Para que ele vai servir na prática.",f:[
+ ["obj","Qual é o principal objetivo?","single",["Vender pelo WhatsApp","Apresentar para atacado/revenda","Lançar uma coleção ou linha","Campanha de data sazonal","Mostrar o portfólio completo"],"",1],
+ ["pub","Quem vai receber o catálogo?","area",null,"Perfil do cliente: idade, onde mora, o que valoriza na hora de comprar"],
+ ["uso","Onde ele será usado?","multi",["WhatsApp","Instagram","Impresso na loja","Enviado por e-mail","Feiras e eventos","Site"]]]},
+{t:"Produtos",s:"O conteúdo que vai dentro das páginas.",f:[
+ ["qtd","Quantos produtos entram, mais ou menos?","single",["Até 10","11 a 30","31 a 60","Mais de 60"]],
+ ["cat","Quais são as categorias ou linhas?","area",null,"Ex.: bolos, docinhos, kits de presente"],
+ ["info","O que aparece em cada produto?","multi",["Foto","Nome","Descrição","Preço","Tamanhos","Cores","Código/SKU","Ingredientes ou composição","Medidas","Quantidade mínima"]],
+ ["preco","Os preços ficam à mostra?","single",["Sim","Não, só sob consulta","Só alguns"]],
+ ["dest","Algum produto ou promoção deve ganhar destaque?","area"]]},
+{t:"Fotos e material",s:"Isso muda bastante o trabalho e o prazo.",f:[
+ ["fotos","Como estão as fotos dos produtos?","single",["Profissionais","Tiradas no celular, boas","Precisam melhorar","Ainda não tenho"]],
+ ["textos","Os textos e descrições estão prontos?","single",["Sim, prontos","Tenho parte","Preciso de ajuda para escrever"]],
+ ["entrega","Como vai me enviar o material?","single",["Pasta no Google Drive","WhatsApp","E-mail"]]]},
+{t:"Formato",s:"Como o catálogo será visto ou impresso.",f:[
+ ["fmt","Em qual formato?","single",["Digital (PDF)","Impresso","Os dois"]],
+ ["ori","Orientação","single",["Vertical","Horizontal","Quadrado","Ainda não sei"]],
+ ["pag","Quantas páginas você imagina?","text",null,"Pode ser um palpite"],
+ ["tir","Se for impresso: tiragem e papel desejado","text"]]},
+{t:"Identidade e estilo",s:"O visual que o catálogo deve ter.",f:[
+ ["logo","A marca já tem logotipo?","single",["Sim","Não","Está em criação"]],
+ ["paleta","Tem cores e fontes definidas?","text",null,"Pode escrever as cores ou dizer que não tem"],
+ ["estilo","Quais palavras combinam com a marca?","multi",["Minimalista","Elegante","Colorido","Delicado","Moderno","Rústico","Divertido","Luxuoso","Natural"]],
+ ["ref","Referências de catálogos ou marcas que você admira","area",null,"Cole links ou diga os nomes"],
+ ["nao","O que você não quer de jeito nenhum?","area"]]},
+{t:"Conteúdo extra",s:"O que mais precisa aparecer além dos produtos.",f:[
+ ["extra","Marque o que deve entrar","multi",["Capa","Página sobre a marca","Como comprar","Formas de pagamento","Prazo e entrega","Tabela de medidas","Contato e redes","QR Code ou link do WhatsApp","Página de agradecimento"]],
+ ["cond","Condições comerciais que precisam constar","area",null,"Pedido mínimo, frete, validade dos preços, etc."]]},
+{t:"Prazo e observações",s:"Por último.",f:[
+ ["data","Para quando você precisa do catálogo?","text",null,"Pode ser uma data ou um evento"],
+ ["obs","Algo mais que eu deva saber?","area"]]}
+];
+var form=document.getElementById("form"),all=[];
+S.forEach(function(sec,si){
+ var fs=document.createElement("fieldset"),h='<legend>'+sec.t+'</legend><p class="sub">'+sec.s+'</p>';
+ sec.f.forEach(function(f){
+  var id=f[0],ty=f[2],op=f[3],hint=f[4]?'<span class="h">'+f[4]+'</span>':'',req=f[5],r=req?' *':'';
+  all.push({id:id,l:f[1],ty:ty,sec:sec.t,req:req});
+  h+='<div class="f" data-id="'+id+'">';
+  if(ty=="text")h+='<label class="t" for="'+id+'">'+f[1]+r+hint+'</label><input type="text" id="'+id+'" autocomplete="off">';
+  else if(ty=="area")h+='<label class="t" for="'+id+'">'+f[1]+r+hint+'</label><textarea id="'+id+'"></textarea>';
+  else{var k=ty=="single"?"radio":"checkbox";
+   h+='<div class="q" id="q-'+id+'">'+f[1]+r+hint+'</div><div class="os" role="group" aria-labelledby="q-'+id+'">';
+   op.forEach(function(o){h+='<label class="o"><input type="'+k+'" name="'+id+'" value="'+o+'"><span>'+o+'</span></label>'});
+   h+='</div>';}
+  h+='<p class="err">Preencha este campo para continuar.</p></div>';
+ });
+ fs.innerHTML=h;form.appendChild(fs);
+});
+function val(f){
+ if(f.ty=="text"||f.ty=="area")return document.getElementById(f.id).value.trim();
+ return Array.prototype.map.call(form.querySelectorAll('input[name="'+f.id+'"]:checked'),function(x){return x.value}).join(", ");
+}
+function prog(){
+ var n=0;all.forEach(function(f){if(val(f))n++});
+ var p=Math.round(n/all.length*100);
+ document.getElementById("pc").textContent=p+"%";document.getElementById("fl").style.width=p+"%";
+}
+form.addEventListener("input",prog);form.addEventListener("change",prog);
+function build(){
+ var out="*BRIEFING DE CATÁLOGO*\n",cur="";
+ all.forEach(function(f){var v=val(f);if(!v)return;
+  if(f.sec!=cur){cur=f.sec;out+="\n*"+cur+"*\n"}
+  out+="• "+f.l+": "+v+"\n"});
+ return out.trim();
+}
+function check(){
+ var ok=true,first=null;
+ all.forEach(function(f){if(!f.req)return;
+  var d=form.querySelector('[data-id="'+f.id+'"]'),bad=!val(f);
+  d.classList.toggle("bad",bad);if(bad){ok=false;if(!first)first=d}});
+ if(first)first.scrollIntoView({behavior:"smooth",block:"center"});
+ return ok;
+}
+var msg=document.getElementById("msg");
+document.getElementById("wa").onclick=function(){
+ if(!check()){msg.textContent="Faltam campos obrigatórios (marcados com *).";return}
+ msg.textContent="Abrindo o WhatsApp com as suas respostas.";
+ window.open("https://wa.me/"+WA+"?text="+encodeURIComponent(build()),"_blank");
+};
+document.getElementById("cp").onclick=function(){
+ var t=build();
+ try{navigator.clipboard.writeText(t).then(function(){msg.textContent="Respostas copiadas."},function(){msg.textContent="Não consegui copiar. Use o botão do WhatsApp."})}
+ catch(e){msg.textContent="Não consegui copiar. Use o botão do WhatsApp."}
+};
+</script>
+</body>
+</html>
