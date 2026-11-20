@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Núcleo · Studio Sun</title>
+  <link rel="icon" href="assets/logo-mask.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=7">
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#/inicio" title="Studio Sun · Núcleo">
+        <div class="logo-fx" role="img" aria-label="Studio Sun"></div>
+        <div class="brand-sub"><b>Núcleo</b>gestão do estúdio</div>
+      </a>
+      <nav class="nav" id="nav"></nav>
+      <div class="side-foot">
+        <div class="avatar" id="foot-avatar">E</div>
+        <div class="who"><b id="foot-name">Emilly</b><br><span>Studio Sun</span></div>
+        <button class="icon-btn" id="btn-theme" title="Modo claro/escuro"></button>
+        <button class="icon-btn" id="btn-settings" title="Configurações"></button>
+        <button class="icon-btn" id="btn-collapse" title="Recolher menu"></button>
+      </div>
+    </aside>
+
+    <div class="main">
+      <header class="topbar">
+        <a class="m-logo" href="#/inicio" aria-label="Studio Sun · Início"><span class="logo-fx"></span></a>
+        <div class="search">
+          <span id="search-ico"></span>
+          <input id="search" type="search" placeholder="Buscar cliente, projeto ou contrato…  ( / )" autocomplete="off">
+          <div class="search-results hidden" id="search-results"></div>
+        </div>
+        <div class="spacer"></div>
+        <span class="today-chip" id="today-chip"></span>
+        <div class="dropdown">
+          <button class="btn primary" id="btn-new"><span id="ico-plus"></span><span class="btn-new-label">Novo</span></button>
+          <div class="menu hidden" id="menu-new"></div>
+        </div>
+      </header>
+      <main class="content" id="view"></main>
+    </div>
+  </div>
+
+  <nav class="bottom-bar" id="bottom-bar"></nav>
+  <div class="toasts" id="toasts"></div>
+  <div id="modal-root"></div>
+
+  <script src="js/data.js?v=7"></script>
+  <script src="js/ui.js?v=7"></script>
+  <script src="js/pages-core.js?v=7"></script>
+  <script src="js/pages-ops.js?v=7"></script>
+  <script src="js/pages-extra.js?v=7"></script>
+  <script src="js/brand-ai.js?v=7"></script>
+  <script src="js/app.js?v=7"></script>
+</body>
+</html>
